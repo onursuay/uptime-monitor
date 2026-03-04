@@ -1,0 +1,16 @@
+[
+  {
+    "id": "7add1774-9efc-46e8-9374-97fd9718fd0b",
+    "url": "https://hotelmidas.com/",
+    "name": "Midas Otel",
+    "addedAt": "2026-03-04T10:30:09.752Z",
+    "lastCheck": "2026-03-04T12:21:01.037Z",
+    "status": "up",
+    "downSince": null,
+    "notifiedAt": null,
+    "lastError": null,
+    "errorType": null,
+    "responseTime": 131,
+    "sslDaysRemaining": 343
+  }
+]
