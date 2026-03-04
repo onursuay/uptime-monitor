@@ -57,8 +57,8 @@ function checkSsl(hostname: string): Promise<SslInfo | null> {
 
           resolve({
             valid: now >= validFrom && now <= validTo,
-            issuer: cert.issuer?.O || cert.issuer?.CN || "Bilinmiyor",
-            subject: cert.subject?.CN || "Bilinmiyor",
+            issuer: String(cert.issuer?.O || cert.issuer?.CN || "Bilinmiyor"),
+            subject: String(cert.subject?.CN || "Bilinmiyor"),
             validFrom: validFrom.toISOString(),
             validTo: validTo.toISOString(),
             daysRemaining,
