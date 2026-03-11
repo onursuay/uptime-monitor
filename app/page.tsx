@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { ModeToggle } from "@/components/mode-toggle";
 
 interface Site {
   id: string;
@@ -98,7 +99,7 @@ export default function Dashboard() {
   };
 
   const responseColor = (ms: number | null) => {
-    if (ms === null) return "text-gray-500";
+    if (ms === null) return "text-gray-500 dark:text-gray-400";
     if (ms < 500) return "text-accent-green";
     if (ms < 1500) return "text-accent-yellow";
     return "text-accent-red";
@@ -110,17 +111,17 @@ export default function Dashboard() {
   const avgResponse =
     sites.filter((s) => s.responseTime).length > 0
       ? Math.round(
-          sites
-            .filter((s) => s.responseTime)
-            .reduce((sum, s) => sum + (s.responseTime || 0), 0) /
-            sites.filter((s) => s.responseTime).length
-        )
+        sites
+          .filter((s) => s.responseTime)
+          .reduce((sum, s) => sum + (s.responseTime || 0), 0) /
+        sites.filter((s) => s.responseTime).length
+      )
       : 0;
 
   return (
     <div className="min-h-screen">
       {/* Background gradient orbs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-accent-purple/5 rounded-full blur-[100px]" />
         <div className="absolute top-1/2 -left-40 w-80 h-80 bg-accent-blue/5 rounded-full blur-[100px]" />
       </div>
@@ -132,11 +133,12 @@ export default function Dashboard() {
             <h1 className="text-3xl font-bold gradient-text tracking-tight">
               Uptime Monitor
             </h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
               Site durumlarini gercek zamanli izleyin
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <ModeToggle />
             <button
               onClick={() => setShowForm(!showForm)}
               className="px-4 py-2.5 rounded-xl bg-accent-blue/10 text-accent-blue border border-accent-blue/20 hover:bg-accent-blue/20 transition-all text-sm font-medium"
@@ -166,13 +168,13 @@ export default function Dashboard() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="glass-card rounded-2xl p-5">
-            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
               Toplam Site
             </div>
-            <div className="text-3xl font-bold text-white">{sites.length}</div>
+            <div className="text-3xl font-bold">{sites.length}</div>
           </div>
           <div className="glass-card rounded-2xl p-5">
-            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
               Cevrimici
             </div>
             <div className="text-3xl font-bold text-accent-green flex items-center gap-2">
@@ -181,7 +183,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="glass-card rounded-2xl p-5">
-            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
               Cevrimdisi
             </div>
             <div className="text-3xl font-bold text-accent-red flex items-center gap-2">
@@ -190,7 +192,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="glass-card rounded-2xl p-5">
-            <div className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
               Ort. Yanit
             </div>
             <div className={`text-3xl font-bold ${responseColor(avgResponse)}`}>
@@ -202,7 +204,7 @@ export default function Dashboard() {
         {/* Add Site Form */}
         {showForm && (
           <div className="glass-card rounded-2xl p-6 mb-8 border border-accent-blue/20">
-            <h2 className="text-lg font-semibold text-white mb-4">
+            <h2 className="text-lg font-semibold mb-4">
               Yeni Site Ekle
             </h2>
             <form onSubmit={addSite} className="flex flex-col sm:flex-row gap-3">
@@ -211,14 +213,14 @@ export default function Dashboard() {
                 placeholder="Site adi"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="flex-1 px-4 py-3 rounded-xl bg-dark-700 border border-glass-border text-white placeholder-gray-500 text-sm focus:outline-none input-glow transition-all"
+                className="flex-1 px-4 py-3 rounded-xl bg-[var(--bg-tertiary)] border border-glass-border placeholder-gray-500 text-sm focus:outline-none input-glow transition-all"
               />
               <input
                 type="text"
                 placeholder="https://example.com"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                className="flex-[2] px-4 py-3 rounded-xl bg-dark-700 border border-glass-border text-white placeholder-gray-500 text-sm focus:outline-none input-glow transition-all"
+                className="flex-[2] px-4 py-3 rounded-xl bg-[var(--bg-tertiary)] border border-glass-border placeholder-gray-500 text-sm focus:outline-none input-glow transition-all"
               />
               <button
                 type="submit"
@@ -237,7 +239,7 @@ export default function Dashboard() {
             <div className="glass-card rounded-2xl p-16 text-center">
               <div className="text-5xl mb-4 opacity-20">📡</div>
               <p className="text-gray-400 text-lg">Henuz site eklenmemis</p>
-              <p className="text-gray-600 text-sm mt-1">
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
                 &quot;+ Site Ekle&quot; butonuna tiklayarak baslayin
               </p>
             </div>
@@ -254,14 +256,14 @@ export default function Dashboard() {
                       ) : site.status === "down" ? (
                         <div className="w-3 h-3 rounded-full bg-accent-red pulse-red" />
                       ) : (
-                        <div className="w-3 h-3 rounded-full bg-gray-600" />
+                        <div className="w-3 h-3 rounded-full bg-gray-400 dark:bg-gray-600" />
                       )}
                     </div>
 
                     <div className="flex-1 min-w-0">
                       {/* Name + URL */}
                       <div className="flex items-center gap-3 flex-wrap">
-                        <span className="font-semibold text-white text-base">
+                        <span className="font-semibold text-base">
                           {site.name}
                         </span>
                         {site.status === "up" && (
@@ -275,7 +277,7 @@ export default function Dashboard() {
                           </span>
                         )}
                         {site.status === "unknown" && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-500/10 text-gray-400 border border-gray-500/20">
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-500/10 text-gray-500 dark:text-gray-400 border border-gray-500/20">
                             Bekliyor
                           </span>
                         )}
@@ -285,7 +287,7 @@ export default function Dashboard() {
                         href={site.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-gray-500 hover:text-accent-blue transition-colors truncate block mt-0.5"
+                        className="text-sm text-gray-500 dark:text-gray-400 hover:text-accent-blue transition-colors truncate block mt-0.5"
                       >
                         {site.url}
                       </a>
@@ -300,11 +302,10 @@ export default function Dashboard() {
                             const isSSL = site.errorType.startsWith("ssl_");
                             return (
                               <span
-                                className={`text-xs px-2 py-0.5 rounded-full border ${
-                                  isSSL
+                                className={`text-xs px-2 py-0.5 rounded-full border ${isSSL
                                     ? "bg-accent-yellow/10 text-accent-yellow border-accent-yellow/20"
                                     : "bg-accent-red/10 text-accent-red border-accent-red/20"
-                                }`}
+                                  }`}
                               >
                                 {info.icon} {info.label}
                               </span>
@@ -314,13 +315,12 @@ export default function Dashboard() {
                         {/* SSL badge */}
                         {site.sslDaysRemaining !== null && (
                           <span
-                            className={`text-xs px-2 py-0.5 rounded-full border ${
-                              site.sslDaysRemaining <= 0
+                            className={`text-xs px-2 py-0.5 rounded-full border ${site.sslDaysRemaining <= 0
                                 ? "bg-accent-red/10 text-accent-red border-accent-red/20"
                                 : site.sslDaysRemaining <= 30
-                                ? "bg-accent-yellow/10 text-accent-yellow border-accent-yellow/20"
-                                : "bg-accent-green/10 text-accent-green border-accent-green/20"
-                            }`}
+                                  ? "bg-accent-yellow/10 text-accent-yellow border-accent-yellow/20"
+                                  : "bg-accent-green/10 text-accent-green border-accent-green/20"
+                              }`}
                           >
                             🔒 SSL {site.sslDaysRemaining <= 0
                               ? "suresi dolmus"
@@ -345,7 +345,7 @@ export default function Dashboard() {
 
                       {/* Down since */}
                       {site.downSince && (
-                        <div className="mt-2 text-xs text-accent-yellow/70">
+                        <div className="mt-2 text-xs text-accent-yellow/90 dark:text-accent-yellow/70">
                           ⏳ {formatDate(site.downSince)} tarihinden beri cevrimdisi
                         </div>
                       )}
@@ -355,14 +355,14 @@ export default function Dashboard() {
                   {/* Right: Time + Delete */}
                   <div className="flex items-center gap-3 shrink-0">
                     <div className="text-right">
-                      <div className="text-xs text-gray-600">Son kontrol</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-600">Son kontrol</div>
                       <div className="text-xs text-gray-400">
                         {timeSince(site.lastCheck)}
                       </div>
                     </div>
                     <button
                       onClick={() => deleteSite(site.id)}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-lg hover:bg-accent-red/10 text-gray-600 hover:text-accent-red"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity p-2 rounded-lg hover:bg-accent-red/10 text-gray-400 dark:text-gray-600 hover:text-accent-red"
                       title="Sil"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -378,7 +378,7 @@ export default function Dashboard() {
 
         {/* Footer */}
         {sites.length > 0 && (
-          <div className="mt-8 text-center text-xs text-gray-600">
+          <div className="mt-8 text-center text-xs text-gray-500 dark:text-gray-600">
             Her 5 dakikada otomatik kontrol yapilir
             {unknownCount > 0 && ` · ${unknownCount} site henuz kontrol edilmedi`}
           </div>
