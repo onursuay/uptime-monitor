@@ -162,7 +162,8 @@ export async function checkUrl(url: string): Promise<CheckResult> {
       method: "GET",
       signal: controller.signal,
       redirect: "follow",
-      headers: { "User-Agent": "UptimeMonitor/1.0" },
+      cache: "no-store",
+      headers: { "User-Agent": "UptimeMonitor/1.0", "Cache-Control": "no-cache" },
     });
 
     clearTimeout(timeout);

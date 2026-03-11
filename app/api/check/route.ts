@@ -5,6 +5,9 @@ import { sendDownAlert, sendRecoveryAlert } from "@/lib/notifier";
 
 const FIVE_HOURS_MS = 5 * 60 * 60 * 1000;
 
+export const maxDuration = 60; // Vercel's 10s limit override for this route
+export const dynamic = "force-dynamic"; // Do not cache this route
+
 export async function GET(req: NextRequest) {
   // Vercel Cron otomatik olarak CRON_SECRET header'i gonderir
   // Manuel cagrilarda da Authorization header desteklenir
