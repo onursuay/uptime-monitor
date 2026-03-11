@@ -60,9 +60,9 @@ export async function GET(req: NextRequest) {
       let notifiedAt = site.notifiedAt;
 
       if (downDuration >= FIVE_HOURS_MS) {
-        const shouldNotify =
-          !site.notifiedAt ||
-          Date.now() - new Date(site.notifiedAt).getTime() >= FIVE_HOURS_MS;
+        // Send email only if we haven't notified for this specific downtime incident yet
+        // meaning `site.notifiedAt` is null (never notified since it went down 5+ hours ago)
+        const shouldNotify = !site.notifiedAt;
 
         if (shouldNotify) {
           const errorDetail = `[${result.errorType}] ${result.error || `HTTP ${result.statusCode}`}`;

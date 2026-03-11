@@ -84,7 +84,7 @@ function classifyError(err: Error): { error: string; errorType: ErrorType } {
   const msg = err.message || "";
 
   if (err.name === "AbortError") {
-    return { error: "Zaman asimi (10s timeout)", errorType: "timeout" };
+    return { error: "Zaman asimi (30s timeout)", errorType: "timeout" };
   }
   if (msg.includes("ENOTFOUND")) {
     return { error: "DNS bulunamadi - domain gecersiz veya DNS sunucusu yanitlamiyor", errorType: "dns_not_found" };
@@ -156,7 +156,7 @@ export async function checkUrl(url: string): Promise<CheckResult> {
 
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     const res = await fetch(url, {
       method: "GET",

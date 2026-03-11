@@ -15,11 +15,7 @@ export async function sendDownAlert({
   error,
   downSince,
 }: NotifyParams): Promise<boolean> {
-  const notifyEmail = process.env.NOTIFY_EMAIL;
-  if (!notifyEmail) {
-    console.error("NOTIFY_EMAIL env degiskeni ayarlanmamis");
-    return false;
-  }
+  const notifyEmail = process.env.NOTIFY_EMAIL || "onursuay@hotmail.com";
 
   const downDate = new Date(downSince);
   const now = new Date();
@@ -79,8 +75,7 @@ export async function sendRecoveryAlert({
   siteUrl,
   downSince,
 }: Omit<NotifyParams, "error">): Promise<boolean> {
-  const notifyEmail = process.env.NOTIFY_EMAIL;
-  if (!notifyEmail) return false;
+  const notifyEmail = process.env.NOTIFY_EMAIL || "onursuay@hotmail.com";
 
   const downDate = new Date(downSince);
   const now = new Date();
