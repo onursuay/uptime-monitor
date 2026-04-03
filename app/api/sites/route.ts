@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
   if (!url || !name) {
     return NextResponse.json(
-      { error: "url ve name alanlari zorunlu" },
+      { error: "url ve name alanları zorunlu" },
       { status: 400 }
     );
   }
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     normalizedUrl = parsedUrl.toString();
   } catch {
     return NextResponse.json(
-      { error: "Gecersiz URL formati" },
+      { error: "Geçersiz URL formatı" },
       { status: 400 }
     );
   }
@@ -59,7 +59,7 @@ export async function DELETE(req: NextRequest) {
 
   const removed = await removeSite(id);
   if (!removed) {
-    return NextResponse.json({ error: "Site bulunamadi" }, { status: 404 });
+    return NextResponse.json({ error: "Site bulunamadı" }, { status: 404 });
   }
 
   return NextResponse.json({ success: true });

@@ -24,18 +24,18 @@ interface Feedback {
 }
 
 const ERROR_LABELS: Record<string, { label: string; icon: string }> = {
-  ssl_expired: { label: "SSL Suresi Dolmus", icon: "🔓" },
-  ssl_not_yet_valid: { label: "SSL Gecerli Degil", icon: "🔓" },
+  ssl_expired: { label: "SSL Süresi Dolmuş", icon: "🔓" },
+  ssl_not_yet_valid: { label: "SSL Geçerli Değil", icon: "🔓" },
   ssl_self_signed: { label: "Self-Signed SSL", icon: "⚠️" },
-  ssl_hostname_mismatch: { label: "SSL Domain Uyumsuz", icon: "🔓" },
-  ssl_other: { label: "SSL Hatasi", icon: "🔓" },
-  dns_not_found: { label: "DNS Hatasi", icon: "🌐" },
-  connection_refused: { label: "Baglanti Reddedildi", icon: "🚫" },
-  connection_reset: { label: "Baglanti Kesildi", icon: "⛓️" },
-  timeout: { label: "Zaman Asimi", icon: "⏱️" },
-  http_4xx: { label: "Istemci Hatasi", icon: "⚠️" },
-  http_5xx: { label: "Sunucu Hatasi", icon: "🔥" },
-  too_slow: { label: "Yavas Yanit", icon: "🐌" },
+  ssl_hostname_mismatch: { label: "SSL Alan Adı Uyumsuz", icon: "🔓" },
+  ssl_other: { label: "SSL Hatası", icon: "🔓" },
+  dns_not_found: { label: "DNS Hatası", icon: "🌐" },
+  connection_refused: { label: "Bağlantı Reddedildi", icon: "🚫" },
+  connection_reset: { label: "Bağlantı Kesildi", icon: "⛓️" },
+  timeout: { label: "Zaman Aşımı", icon: "⏱️" },
+  http_4xx: { label: "İstemci Hatası", icon: "⚠️" },
+  http_5xx: { label: "Sunucu Hatası", icon: "🔥" },
+  too_slow: { label: "Yavaş Yanıt", icon: "🐌" },
   unknown: { label: "Bilinmeyen", icon: "❓" },
 };
 
@@ -71,7 +71,7 @@ export default function Dashboard() {
       const res = await fetch("/api/sites", { cache: "no-store" });
       const data = await readJsonResponse<Site[]>(
         res,
-        "Site listesi yuklenemedi."
+        "Site listesi yüklenemedi."
       );
       setSites(data);
       setFeedback((current) => (current?.type === "error" ? null : current));
@@ -81,7 +81,7 @@ export default function Dashboard() {
         text:
           error instanceof Error
             ? error.message
-            : "Site listesi yuklenemedi.",
+            : "Site listesi yüklenemedi.",
       });
     }
   }, []);
@@ -158,12 +158,12 @@ export default function Dashboard() {
       const res = await fetch("/api/check", { method: "POST" });
       const data = await readJsonResponse<{ checked: number }>(
         res,
-        "Kontrol baslatilamadi."
+        "Kontrol başlatılamadı."
       );
       await fetchSites();
       setFeedback({
         type: "success",
-        text: `${data.checked} site icin kontrol tamamlandi.`,
+        text: `${data.checked} site için kontrol tamamlandı.`,
       });
     } catch (error) {
       setFeedback({
@@ -171,7 +171,7 @@ export default function Dashboard() {
         text:
           error instanceof Error
             ? error.message
-            : "Kontrol baslatilamadi.",
+            : "Kontrol başlatılamadı.",
       });
     } finally {
       setChecking(false);
@@ -179,19 +179,19 @@ export default function Dashboard() {
   };
 
   const formatDate = (iso: string | null) => {
-    if (!iso) return "Henuz kontrol edilmedi";
+    if (!iso) return "Henüz kontrol edilmedi";
     return new Date(iso).toLocaleString("tr-TR");
   };
 
   const timeSince = (iso: string | null) => {
-    if (!iso) return "Henuz kontrol edilmedi";
+    if (!iso) return "Henüz kontrol edilmedi";
     const diff = Date.now() - new Date(iso).getTime();
     const mins = Math.floor(diff / 60000);
-    if (mins < 1) return "az once";
-    if (mins < 60) return `${mins} dk once`;
+    if (mins < 1) return "az önce";
+    if (mins < 60) return `${mins} dk önce`;
     const hours = Math.floor(mins / 60);
-    if (hours < 24) return `${hours} saat once`;
-    return `${Math.floor(hours / 24)} gun once`;
+    if (hours < 24) return `${hours} saat önce`;
+    return `${Math.floor(hours / 24)} gün önce`;
   };
 
   const responseColor = (ms: number | null) => {
@@ -233,7 +233,7 @@ export default function Dashboard() {
               Website Tracking
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              Site durumlarini gercek zamanli izleyin
+              Site durumlarını gerçek zamanlı izleyin
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -274,7 +274,7 @@ export default function Dashboard() {
           </div>
           <div className="glass-card rounded-2xl p-5">
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-              Cevrimici
+              Çevrimiçi
             </div>
             <div className="text-3xl font-bold text-accent-green flex items-center gap-2">
               {upCount}
@@ -283,7 +283,7 @@ export default function Dashboard() {
           </div>
           <div className="glass-card rounded-2xl p-5">
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-              Cevrimdisi
+              Çevrimdışı
             </div>
             <div className="text-3xl font-bold text-accent-red flex items-center gap-2">
               {downCount}
@@ -292,7 +292,7 @@ export default function Dashboard() {
           </div>
           <div className="glass-card rounded-2xl p-5">
             <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-              Ort. Yanit
+              Ort. Yanıt
             </div>
             <div className={`text-3xl font-bold ${responseColor(avgResponse)}`}>
               {avgResponse > 0 ? `${avgResponse}ms` : "-"}
@@ -320,7 +320,7 @@ export default function Dashboard() {
             <form onSubmit={addSite} className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
-                placeholder="Site adi"
+                placeholder="Site adı"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="flex-1 px-4 py-3 rounded-xl bg-[var(--bg-tertiary)] border border-glass-border placeholder-gray-500 text-sm focus:outline-none input-glow transition-all"
@@ -348,9 +348,9 @@ export default function Dashboard() {
           {sites.length === 0 ? (
             <div className="glass-card rounded-2xl p-16 text-center">
               <div className="text-5xl mb-4 opacity-20">📡</div>
-              <p className="text-gray-400 text-lg">Henuz site eklenmemis</p>
+              <p className="text-gray-400 text-lg">Henüz site eklenmemiş</p>
               <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                &quot;+ Site Ekle&quot; butonuna tiklayarak baslayin
+                &quot;+ Site Ekle&quot; butonuna tıklayarak başlayın
               </p>
             </div>
           ) : (
@@ -378,12 +378,12 @@ export default function Dashboard() {
                         </span>
                         {site.status === "up" && (
                           <span className="text-xs px-2 py-0.5 rounded-full bg-accent-green/10 text-accent-green border border-accent-green/20">
-                            Cevrimici
+                            Çevrimiçi
                           </span>
                         )}
                         {site.status === "down" && (
                           <span className="text-xs px-2 py-0.5 rounded-full bg-accent-red/10 text-accent-red border border-accent-red/20">
-                            Cevrimdisi
+                            Çevrimdışı
                           </span>
                         )}
                         {site.status === "unknown" && (
@@ -433,8 +433,8 @@ export default function Dashboard() {
                               }`}
                           >
                             🔒 SSL {site.sslDaysRemaining <= 0
-                              ? "suresi dolmus"
-                              : `${site.sslDaysRemaining} gun`}
+                              ? "süresi dolmuş"
+                              : `${site.sslDaysRemaining} gün`}
                           </span>
                         )}
 
@@ -456,7 +456,7 @@ export default function Dashboard() {
                       {/* Down since */}
                       {site.downSince && (
                         <div className="mt-2 text-xs text-accent-yellow/90 dark:text-accent-yellow/70">
-                          ⏳ {formatDate(site.downSince)} tarihinden beri cevrimdisi
+                          ⏳ {formatDate(site.downSince)} tarihinden beri çevrimdışı
                         </div>
                       )}
                     </div>
@@ -489,8 +489,8 @@ export default function Dashboard() {
         {/* Footer */}
         {sites.length > 0 && (
           <div className="mt-8 text-center text-xs text-gray-500 dark:text-gray-600">
-            Her 5 dakikada otomatik kontrol yapilir
-            {unknownCount > 0 && ` · ${unknownCount} site henuz kontrol edilmedi`}
+            Her 5 dakikada otomatik kontrol yapılır
+            {unknownCount > 0 && ` · ${unknownCount} site henüz kontrol edilmedi`}
           </div>
         )}
       </div>

@@ -10,7 +10,7 @@ function getResendClient(): Resend | null {
     if (!hasWarnedMissingKey) {
       hasWarnedMissingKey = true;
       console.warn(
-        "[Notifier] RESEND_API_KEY tanimli degil. E-posta bildirimleri devre disi."
+        "[Notifier] RESEND_API_KEY tanımlı değil. E-posta bildirimleri devre dışı."
       );
     }
 
@@ -54,11 +54,11 @@ export async function sendDownAlert({
     await resendClient.emails.send({
       from: "Website Tracking <onboarding@resend.dev>",
       to: notifyEmail,
-      subject: `🔴 SITE DOWN: ${siteName} (${downHours}+ saat)`,
+      subject: `🔴 SİTE ÇEVRİMDIŞI: ${siteName} (${downHours}+ saat)`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: #dc2626; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-            <h1 style="margin: 0; font-size: 20px;">Site Cevrimici Degil!</h1>
+            <h1 style="margin: 0; font-size: 20px;">Site Çevrimdışı!</h1>
           </div>
           <div style="border: 1px solid #e5e7eb; padding: 20px; border-radius: 0 0 8px 8px;">
             <table style="width: 100%; border-collapse: collapse;">
@@ -75,24 +75,24 @@ export async function sendDownAlert({
                 <td style="padding: 8px 0; color: #dc2626;">${error}</td>
               </tr>
               <tr>
-                <td style="padding: 8px 0; font-weight: bold; color: #6b7280;">Down suresi:</td>
+                <td style="padding: 8px 0; font-weight: bold; color: #6b7280;">Kesinti süresi:</td>
                 <td style="padding: 8px 0;">${downHours} saat+ (${downDate.toLocaleString("tr-TR")} tarihinden beri)</td>
               </tr>
               <tr>
-                <td style="padding: 8px 0; font-weight: bold; color: #6b7280;">Kontrol zamani:</td>
+                <td style="padding: 8px 0; font-weight: bold; color: #6b7280;">Kontrol zamanı:</td>
                 <td style="padding: 8px 0;">${now.toLocaleString("tr-TR")}</td>
               </tr>
             </table>
           </div>
           <p style="color: #9ca3af; font-size: 12px; text-align: center; margin-top: 16px;">
-            Website Tracking tarafindan gonderildi
+            Website Tracking tarafından gönderildi
           </p>
         </div>
       `,
     });
     return true;
   } catch (err) {
-    console.error("Email gonderilemedi:", err);
+    console.error("E-posta gönderilemedi:", err);
     return false;
   }
 }
@@ -119,16 +119,16 @@ export async function sendRecoveryAlert({
     await resendClient.emails.send({
       from: "Website Tracking <onboarding@resend.dev>",
       to: notifyEmail,
-      subject: `🟢 SITE RECOVERED: ${siteName}`,
+      subject: `🟢 SİTE YENİDEN ÇEVRİMİÇİ: ${siteName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: #16a34a; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
-            <h1 style="margin: 0; font-size: 20px;">Site Tekrar Cevrimici!</h1>
+            <h1 style="margin: 0; font-size: 20px;">Site Tekrar Çevrimiçi!</h1>
           </div>
           <div style="border: 1px solid #e5e7eb; padding: 20px; border-radius: 0 0 8px 8px;">
-            <p><strong>${siteName}</strong> (<a href="${siteUrl}">${siteUrl}</a>) tekrar erisilebilir durumda.</p>
-            <p>Toplam kesinti suresi: ~${downHours} saat</p>
-            <p>Kurtarma zamani: ${now.toLocaleString("tr-TR")}</p>
+            <p><strong>${siteName}</strong> (<a href="${siteUrl}">${siteUrl}</a>) tekrar erişilebilir durumda.</p>
+            <p>Toplam kesinti süresi: ~${downHours} saat</p>
+            <p>Kurtarma zamanı: ${now.toLocaleString("tr-TR")}</p>
           </div>
         </div>
       `,

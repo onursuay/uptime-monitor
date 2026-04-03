@@ -84,31 +84,31 @@ function classifyError(err: Error): { error: string; errorType: ErrorType } {
   const msg = err.message || "";
 
   if (err.name === "AbortError") {
-    return { error: "Zaman asimi (30s timeout)", errorType: "timeout" };
+    return { error: "Zaman aşımı (30 sn timeout)", errorType: "timeout" };
   }
   if (msg.includes("ENOTFOUND")) {
-    return { error: "DNS bulunamadi - domain gecersiz veya DNS sunucusu yanitlamiyor", errorType: "dns_not_found" };
+    return { error: "DNS bulunamadı - alan adı geçersiz veya DNS sunucusu yanıtlamıyor", errorType: "dns_not_found" };
   }
   if (msg.includes("ECONNREFUSED")) {
-    return { error: "Baglanti reddedildi - sunucu portu kapali veya servis calismiyory", errorType: "connection_refused" };
+    return { error: "Bağlantı reddedildi - sunucu portu kapalı veya servis çalışmıyor", errorType: "connection_refused" };
   }
   if (msg.includes("ECONNRESET")) {
-    return { error: "Baglanti sifirlandi - sunucu baglantiyi kesti", errorType: "connection_reset" };
+    return { error: "Bağlantı sıfırlandı - sunucu bağlantıyı kesti", errorType: "connection_reset" };
   }
   if (msg.includes("CERT_HAS_EXPIRED") || msg.includes("certificate has expired")) {
-    return { error: "SSL sertifikasi suresi dolmus", errorType: "ssl_expired" };
+    return { error: "SSL sertifikası süresi dolmuş", errorType: "ssl_expired" };
   }
   if (msg.includes("CERT_NOT_YET_VALID")) {
-    return { error: "SSL sertifikasi henuz gecerli degil", errorType: "ssl_not_yet_valid" };
+    return { error: "SSL sertifikası henüz geçerli değil", errorType: "ssl_not_yet_valid" };
   }
   if (msg.includes("DEPTH_ZERO_SELF_SIGNED") || msg.includes("self signed")) {
-    return { error: "SSL sertifikasi self-signed (kendinden imzali)", errorType: "ssl_self_signed" };
+    return { error: "SSL sertifikası self-signed (kendinden imzalı)", errorType: "ssl_self_signed" };
   }
   if (msg.includes("ERR_TLS_CERT_ALTNAME_INVALID") || msg.includes("hostname")) {
-    return { error: "SSL sertifikasi domain ile uyusmuyor", errorType: "ssl_hostname_mismatch" };
+    return { error: "SSL sertifikası alan adıyla uyuşmuyor", errorType: "ssl_hostname_mismatch" };
   }
   if (msg.includes("certificate") || msg.includes("SSL") || msg.includes("TLS")) {
-    return { error: `SSL hatasi: ${msg}`, errorType: "ssl_other" };
+    return { error: `SSL hatası: ${msg}`, errorType: "ssl_other" };
   }
 
   return { error: msg, errorType: "unknown" };
@@ -118,10 +118,10 @@ function classifyError(err: Error): { error: string; errorType: ErrorType } {
 function classifyHttpStatus(status: number, statusText: string): { error: string; errorType: ErrorType } {
   if (status >= 500) {
     const details: Record<number, string> = {
-      500: "Sunucu ic hatasi (Internal Server Error)",
-      502: "Kotu aggeçidi (Bad Gateway) - upstream sunucu yanit vermiyor",
-      503: "Servis kullanilamiyor (Service Unavailable) - sunucu asiri yuklu veya bakimda",
-      504: "Aggeçidi zaman asimi (Gateway Timeout) - upstream sunucu yavas",
+      500: "Sunucu iç hatası (Internal Server Error)",
+      502: "Kötü ağ geçidi (Bad Gateway) - upstream sunucu yanıt vermiyor",
+      503: "Servis kullanılamıyor (Service Unavailable) - sunucu aşırı yüklü veya bakımda",
+      504: "Ağ geçidi zaman aşımı (Gateway Timeout) - upstream sunucu yavaş",
     };
     return {
       error: details[status] || `HTTP ${status} ${statusText}`,
@@ -130,11 +130,11 @@ function classifyHttpStatus(status: number, statusText: string): { error: string
   }
   if (status >= 400) {
     const details: Record<number, string> = {
-      400: "Hatali istek (Bad Request)",
+      400: "Hatalı istek (Bad Request)",
       401: "Yetkilendirme gerekli (Unauthorized)",
-      403: "Erisim engellendi (Forbidden)",
-      404: "Sayfa bulunamadi (Not Found)",
-      429: "Cok fazla istek (Rate Limited)",
+      403: "Erişim engellendi (Forbidden)",
+      404: "Sayfa bulunamadı (Not Found)",
+      429: "Çok fazla istek (Rate Limited)",
     };
     return {
       error: details[status] || `HTTP ${status} ${statusText}`,
@@ -181,7 +181,7 @@ export async function checkUrl(url: string): Promise<CheckResult> {
       return {
         isUp: true,
         statusCode: res.status,
-        error: `Yavas yanit: ${(responseTime / 1000).toFixed(1)}s (esik: ${SLOW_THRESHOLD_MS / 1000}s)`,
+        error: `Yavaş yanıt: ${(responseTime / 1000).toFixed(1)}s (eşik: ${SLOW_THRESHOLD_MS / 1000}s)`,
         errorType: "too_slow",
         responseTime,
         sslInfo,
@@ -191,7 +191,7 @@ export async function checkUrl(url: string): Promise<CheckResult> {
     // SSL sertifika süresi uyarısı (30 günden az kaldıysa)
     let sslWarning: string | null = null;
     if (sslInfo && sslInfo.daysRemaining <= 30 && sslInfo.daysRemaining > 0) {
-      sslWarning = `SSL sertifikasi ${sslInfo.daysRemaining} gun icinde sona erecek!`;
+      sslWarning = `SSL sertifikası ${sslInfo.daysRemaining} gün içinde sona erecek!`;
     }
 
     return {
