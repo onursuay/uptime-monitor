@@ -225,9 +225,9 @@ export default function Dashboard() {
         <div className="absolute top-1/2 -left-40 w-80 h-80 bg-accent-blue/5 rounded-full blur-[100px]" />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-6 py-6">
+      <div className="relative max-w-6xl mx-auto px-6 py-3">
         {/* Header */}
-        <header className="flex items-center justify-between mb-8">
+        <header className="flex items-center justify-between mb-6">
           <div className="logo-shine relative inline-flex overflow-hidden rounded-2xl">
             <img
               src="/we_logo.png"
